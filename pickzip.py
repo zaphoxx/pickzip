@@ -6,6 +6,12 @@
 # however the maximum possible thread number will be down adjusted dynamically if given value
 # is to high and unsafe to use. default value is 15000 threads'
 
+# title: pickzip
+# file: pickzip.py
+# author: zaphoxx
+# checkout: https://github.com/zaphoxx/
+# latest update: 12/16/2016 
+
 import argparse
 import zipfile
 import threading
@@ -18,12 +24,14 @@ class cThread (threading.Thread):
 		self.zip=zip
 		self.pw=pw
 	def run(self):
-		#print("[+] starting {}".format(self.name))
+		# print("[+] starting {}".format(self.name))
 		processZipFile(self.zip,self.pw)
 
 def processZipFile(zipFile,password):
 	global exitFlag
 	try:
+        # currently using 'latin-1' you might want to modify
+        # this to your needs
 		zipFile.extractall(pwd=bytes(password,"latin-1"))
 		print("[+] Found password: '{}'".format(password))
 		exitFlag=True
