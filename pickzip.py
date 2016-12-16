@@ -38,17 +38,16 @@ def processZipFile(zipFile,password):
 	except:
 		pass
 
-def initParser():
+def initParser(parser):
 	try:
-		parser=argparse.ArgumentParser(description="parse targetAdress and port(s) from input")
-		parser.add_argument("-z","--zipfile",dest="zipFilename",help="Provide filename of password protected zipfile.")
-		parser.add_argument("-p","--passfile",dest="pwFilename",help="Provide filename of password dictionary.")
-		parser.add_argument("-m","--maxthreads",dest="maxThreadCount",type=int,default=15000,help="Define the maximum number of threads to be started.")
+		parser.add_argument("-z","--zipfile",dest="zipFilename",required=True,help="Provide filename of password protected zipfile.")
+		parser.add_argument("-p","--passfile",dest="pwFilename",required=True,help="Provide filename of password dictionary.")
+		parser.add_argument("-m","--maxthreads",dest="maxThreadCount",type=int,required=False,default=15000,help="Define the maximum number of threads to be started.")
 		args=parser.parse_args()
-		#print(parser.usage())
+		# parser.print_help()
 		return args
 	except:
-		print("[-] Parser initialization failed!")
+		parser.print_help()
 		exit(0)
 
 def handleThread(hThread,maxThreads):
@@ -80,12 +79,13 @@ def main():
 	# default values
 
 	# brief title
-	print("[+] pickzip / simple zipfile password cr4cker")		
-	
+	parser=argparse.ArgumentParser(description="pickzip / simple zipfile password cr4cker")
 	# parse commandline arguments
-	args=initParser()
+	args=initParser(parser)
 	#print(parser.usage())
-	
+	if (args.zipFilename==None or args.pwFilename==None):
+		parser.print_help()
+		exit(0)
 	# print parsed arguments for reference
 	print("[+] target zipfile: '{}'".format(args.zipFilename))
 	print("[+] password dictionary: '{}'".format(args.pwFilename))
