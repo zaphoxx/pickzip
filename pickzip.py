@@ -63,7 +63,10 @@ def handleThread(hThread,maxThreads):
 		hThread.start()
 	except:
 		# adjust maximum number of threads down by hundreds
-		maxThreads=maxThreads - 100
+		if(maxThreads-100)>0:
+			maxThreads=maxThreads - 100
+		else:
+			maxThreads=1
 		# print("[+] maxThreadCount={}".format(maxThreads))
 		# make sure the active threadcount is below maximum thread
 		# prior starting a new thread
